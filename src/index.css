@@ -1,0 +1,518 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: #0a0a0a;
+  color: #e5e5e5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar for sidebar */
+.thin-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.thin-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 3px;
+}
+.thin-scroll::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
+
+/* ===== tldraw dark-canvas theme overrides ===== */
+/* Make the canvas background match the app */
+.tl-background {
+  background-color: #0a0a0a !important;
+}
+.tl-container {
+  --color-background: #0a0a0a;
+  --color-panel: #141414;
+  --color-panel-contrast: #1a1a1a;
+  --color-low: #141414;
+  --color-low-border: #1f1f1f;
+  --color-divider: #1f1f1f;
+  --color-muted-1: #1a1a1a;
+  --color-muted-2: #222222;
+}
+
+/* Hide the default top "menu" bar (we use our own top bar) */
+.tlui-menu-zone {
+  display: none !important;
+}
+/* Hide page menu (we manage projects ourselves) */
+.tlui-page-menu__trigger {
+  display: none !important;
+}
+/* Hide the people/share menu */
+.tlui-people-menu {
+  display: none !important;
+}
+
+/* ===== Custom bottom-left vertical rail (undo / redo / fit / zoom) ===== */
+.space-left-rail {
+  position: fixed;
+  left: 12px;
+  bottom: 14px;
+  z-index: 250;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 5px;
+  background: rgba(20, 20, 20, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  pointer-events: auto;
+}
+
+.space-rail-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: #d4d4d4;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+.space-rail-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+}
+.space-rail-btn:active:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+.space-rail-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.space-rail-sep {
+  width: 18px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 2px 0;
+}
+
+/* Strip the default tldraw chrome from the navigation panel slot since we
+   render our own pill inside it. */
+.tlui-navigation-panel {
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  width: auto !important;
+}
+.tlui-navigation-panel::before {
+  display: none !important;
+}
+
+/* ===== Stacked custom toolbars (secondary pill above main toolbar) ===== */
+.space-toolbar-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+/* Secondary style pill (above main toolbar, gap controlled by .space-toolbar-stack) */
+.space-style-pill {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+
+  background: rgba(20, 20, 20, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.space-style-group {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.space-style-sep {
+  width: 1px;
+  height: 22px;
+  margin: 0 5px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Generic icon button (size variants, eraser) */
+.space-style-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: #d4d4d4;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.space-style-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.space-style-btn[data-active='true'] {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.space-pen-dot {
+  display: block;
+  border-radius: 9999px;
+  background: #f2f2f2;
+}
+
+/* Color button — circle that holds the color dot */
+.space-color-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 120ms ease;
+}
+.space-color-btn:hover {
+  transform: scale(1.1);
+}
+.space-color-btn[data-active='true'] {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.space-color-dot {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25) inset;
+}
+
+/* Rainbow custom-color button */
+.space-cp-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.space-rainbow-dot {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: conic-gradient(
+    from 0deg,
+    #ef4444,
+    #f59e0b,
+    #facc15,
+    #22c55e,
+    #06b6d4,
+    #3b82f6,
+    #a855f7,
+    #ec4899,
+    #ef4444
+  );
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25) inset;
+}
+
+/* Color picker popover */
+.space-cp-popover {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 400;
+  padding: 12px;
+  background: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.7);
+  min-width: 260px;
+}
+
+.space-cp-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: -32px;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  font-size: 11px;
+  white-space: nowrap;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  color: #e5e5e5;
+  pointer-events: none;
+}
+
+.space-cp-root {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.space-cp-sv {
+  position: relative;
+  width: 260px;
+  height: 150px;
+  border-radius: 8px;
+  cursor: crosshair;
+  overflow: hidden;
+  touch-action: none;
+}
+.space-cp-sv-handle {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  margin-top: -7px;
+  border-radius: 9999px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.space-cp-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.space-cp-swatch {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+.space-cp-sliders {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Hue range slider */
+.space-cp-hue,
+.space-cp-alpha {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+}
+.space-cp-hue {
+  background: linear-gradient(
+    to right,
+    #ff0000 0%,
+    #ffff00 17%,
+    #00ff00 33%,
+    #00ffff 50%,
+    #0000ff 67%,
+    #ff00ff 83%,
+    #ff0000 100%
+  );
+}
+.space-cp-alpha {
+  background-color: #222;
+}
+.space-cp-hue::-webkit-slider-thumb,
+.space-cp-alpha::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+.space-cp-hue::-moz-range-thumb,
+.space-cp-alpha::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+/* RGB input row */
+.space-cp-rgb {
+  display: flex;
+  gap: 8px;
+}
+.space-cp-rgb-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.space-cp-rgb-input {
+  width: 100%;
+  text-align: center;
+  background: #1a1a1a;
+  color: #e5e5e5;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 4px 0;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+.space-cp-rgb-input:focus {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.space-cp-rgb-input::-webkit-outer-spin-button,
+.space-cp-rgb-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.space-cp-rgb-label {
+  font-size: 10px;
+  color: #737373;
+  letter-spacing: 0.06em;
+}
+
+/* ===== Main bottom toolbar (replaces tldraw's default) ===== */
+.space-toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  background: rgba(20, 20, 20, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.space-toolbar-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: #d4d4d4;
+  cursor: pointer;
+  transition: background-color 120ms ease, transform 120ms ease;
+}
+
+.space-toolbar-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.space-toolbar-btn[data-active='true'] {
+  background: #ffffff;
+  color: #0a0a0a;
+}
+.space-toolbar-btn[data-active='true'] svg {
+  color: #0a0a0a;
+}
+
+/* Arrow tool sub-menu (Elbow / Curved / Straight / Line) */
+.space-arrow-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.space-arrow-menu {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 350;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 8px;
+  background: rgba(20, 20, 20, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.space-arrow-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: #e5e5e5;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.space-arrow-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+.space-arrow-btn[data-active='true'] {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Hide tldraw's default toolbar containers — we render our own at the bottom. */
+.tlui-toolbar__tools,
+.tlui-toolbar__extras {
+  display: none !important;
+}
+
+/* Slim down the toolbar bar so it just centers our stack at the bottom */
+.tlui-toolbar {
+  background: transparent !important;
+  pointer-events: none !important;
+  padding-bottom: 14px !important;
+}
+.tlui-toolbar > * {
+  pointer-events: auto;
+}
+.tlui-toolbar__inner {
+  background: transparent !important;
+}
