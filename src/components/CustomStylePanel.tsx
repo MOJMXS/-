@@ -161,7 +161,6 @@ export default function CustomStylePanel() {
       <button
         type="button"
         onPointerDown={activateEraser}
-        data-active={currentTool === 'eraser'}
         className="space-style-btn"
         title="Eraser (E)"
         aria-label="Eraser"
